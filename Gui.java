@@ -1,65 +1,87 @@
 
 /**
- * Main class for Connect4 game.
- *
+ * Challenge 8
+ * Java Gui program to simulate the Connect4 board game.
+ * 
  * @author Oisin O'Halloran : 17225477, Peter Roe : 17238544
  * @version 01/04/2018
  */
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class Gui {
 
+    //array used in win check, needs to be global as win check is recursive
     private static int[] dir;
     //variable to hold id of current player
     private static int player = 0;
     //grid of buttons to be used for board
     private final static JButton grid[][] = new JButton[7][6];
     private static JMenu turn;
-
-    //load images
-    final static ImageIcon blank = new ImageIcon("blank.png");
-    final static ImageIcon red = new ImageIcon("red.png");
-    final static ImageIcon yellow = new ImageIcon("yellow.png");
+    private static JMenu results;
+    //total number of games
+    private static int games = 0;
+    //wins by red
+    private static int redWins = 0;
+    //wins by yellow
+    private static int yellowWins = 0;
+    
+    //images
+    static ImageIcon blank = new ImageIcon();
+    static ImageIcon red = new ImageIcon();
+    static ImageIcon yellow = new ImageIcon();
 
     /**
      * Method used to create and run the game.
      */
     private static void createGui() {
-
+        //load images from files
+        blank = new ImageIcon(Gui.class.getClassLoader().getResource("imgs/blank.png"));
+        yellow = new ImageIcon(Gui.class.getClassLoader().getResource("imgs/yellow.png"));
+        red = new ImageIcon(Gui.class.getClassLoader().getResource("imgs/red.png"));
         //set up main frame
         JFrame frame = new JFrame("Connect4");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //set up menu
         JMenuBar menuBar;
         menuBar = new JMenuBar();
+        
+        //menu section for game options
         JMenu menu;
         menu = new JMenu("Options");
+        
+        //menu section to show current player
         turn = new JMenu("Turn: Yellow");
+        turn.setOpaque(true);
+        turn.setBackground(Color.yellow);
+        
+        //meu option to show results
+        results = new JMenu("  Games: " + games + "   Red: " + redWins + "   Yellow: " + yellowWins);
+
+        //event listner for menu buttons
         JMenuItem reset = new JMenuItem(new AbstractAction("reset game") {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("reset");
                 resetGrid();
             }
         });
+        JMenuItem quit = new JMenuItem(new AbstractAction("quit") {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        
+        //add elements to menu bars
         menu.add(reset);
+        menu.add(quit);
         menuBar.add(menu);
         menuBar.add(turn);
+        menuBar.add(results);
 
         //make layout for frame and add it to it
         GridLayout mainGrid = new GridLayout(6, 7);
         frame.setLayout(mainGrid);
+        //add menubar to frame
         frame.setJMenuBar(menuBar);
 
         //create array of buttons
@@ -81,6 +103,7 @@ public class Gui {
                                 grid[i][j].setIcon((player == 1 ? red : yellow));
 
                                 // Insert win check here
+                                //reset dir array
                                 dir = new int[7];
                                 if (checkWin(i, j, -1)) {
                                     break;
@@ -92,8 +115,10 @@ public class Gui {
 
                                 if (player == 1) {
                                     turn.setText("Turn: Red");
+                                    turn.setBackground(Color.red);
                                 } else {
                                     turn.setText("Turn: Yellow");
+                                    turn.setBackground(Color.yellow);
                                 }
 
                                 break;
@@ -207,6 +232,10 @@ public class Gui {
                     int optionType = JOptionPane.OK_CANCEL_OPTION;
                     int result = JOptionPane.showConfirmDialog(null, text, title, optionType);
                     if (result == JOptionPane.OK_OPTION) {
+                        //update results
+                        games++;
+                        if(player == 1)redWins++;
+                        else yellowWins++;
                         resetGrid();
                     } else {
                         System.exit(0);
@@ -287,13 +316,15 @@ public class Gui {
         player = 0;
         //update gui
         turn.setText("Turn: Yellow");
+        turn.setBackground(Color.yellow);
+        //update results
+        results.setText("Games: " + games + " Red: " + redWins + " Yellow: " + yellowWins);
     }
 
     /**
      * Main method used to run Connect4 game.
      */
     public static void main(String[] Args) {
-        System.out.println("Hello There");
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 //run gui method
