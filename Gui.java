@@ -154,13 +154,11 @@ public class Gui {
     private static boolean checkWin(int i, int j, int D) {
         System.out.println("checkWin run as " + (player == 1 ? "red" : "yellow") + " with D = " + D);
         if (D == -1) {
-            System.out.print("Pri-checks:");
             //top right adjacent block
             try {
 
                 if (grid[i + 1][j - 1].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[0]++;
-                    System.out.print(" " + 0);
                 }
 
             } catch (Exception e) {
@@ -170,7 +168,6 @@ public class Gui {
 
                 if (grid[i + 1][j].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[1]++;
-                    System.out.print(" " + 1);
                 }
             } catch (Exception e) {
             }
@@ -179,7 +176,6 @@ public class Gui {
 
                 if (grid[i + 1][j + 1].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[2]++;
-                    System.out.print(" " + 2);
                 }
             } catch (Exception e) {
             }
@@ -187,7 +183,6 @@ public class Gui {
             try {
                 if (grid[i][j + 1].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[3]++;
-                    System.out.print(" " + 3);
                 }
             } catch (Exception e) {
             }
@@ -196,7 +191,6 @@ public class Gui {
 
                 if (grid[i - 1][j + 1].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[4]++;
-                    System.out.print(" " + 4);
                 }
             } catch (Exception e) {
             }
@@ -205,7 +199,6 @@ public class Gui {
 
                 if (grid[i - 1][j].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[5]++;
-                    System.out.print(" " + 5);
                 }
             } catch (Exception e) {
             }
@@ -213,7 +206,6 @@ public class Gui {
             try {
                 if (grid[i - 1][j - 1].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[6]++;
-                    System.out.print(" " + 6);
                 }
             } catch (Exception e) {
             }
@@ -222,7 +214,6 @@ public class Gui {
                 if (dir[d] == 1) {
                     checkWin(i, j, d);
                 }
-                System.out.println("Dir[" + d + "] = " + dir[d]);
             }
             // Check for winning condition
             for (int z = 0; z < 3; z++) {
@@ -248,7 +239,6 @@ public class Gui {
         } else {
 
             try {
-                System.out.println("Second type Check with D = " + D);
                 switch (D) {
                     case 0:
                         if (grid[i + 1][j - 1].getIcon().equals((player == 1 ? red : yellow))) {
