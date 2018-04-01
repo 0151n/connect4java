@@ -2,7 +2,8 @@
 /**
  * Challenge 8
  * Java Gui program to simulate the Connect4 board game.
- * 
+ * Group: 33
+ *
  * @author Oisin O'Halloran : 17225477, Peter Roe : 17238544
  * @version 01/04/2018
  */
