@@ -1,4 +1,9 @@
-
+/**
+ * Main class for Connect4 game.
+ *
+ * @author Oisin O'Halloran : 17225477, Peter Roe : 17238544
+ * @version 01/04/2018
+ */
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,20 +18,26 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+
 public class Gui {
 
-    //private static int cols[] = new int[7];
     private static int[] dir;
-    private static int player = 0;
+    //variable to hold id of current player
+	private static int player = 0;
+    //grid of buttons to be used for board
     private final static JButton grid[][] = new JButton[7][6];
+  	//
     private static boolean live = true;
     private static JMenu turn;
 
-    //load images ------------ Warning will need to be changed.
-    final static ImageIcon blank = new ImageIcon("C:\\Users\\peter\\Documents\\NetBeansProjects\\Connect4\\src\\blank.png");
-    final static ImageIcon red = new ImageIcon("C:\\Users\\peter\\Documents\\NetBeansProjects\\Connect4\\src\\red.png");
-    final static ImageIcon yellow = new ImageIcon("C:\\Users\\peter\\Documents\\NetBeansProjects\\Connect4\\src\\yellow.png");
+    //load images
+    final static ImageIcon blank = new ImageIcon("blank.png");
+    final static ImageIcon red = new ImageIcon("red.png");
+    final static ImageIcon yellow = new ImageIcon("yellow.png");
 
+  	/**
+     * Method used to create and run the game.
+     */
     private static void createGui() {
 
         //set up main frame
@@ -107,11 +118,20 @@ public class Gui {
         frame.setVisible(true);
     }
 
+  	/**
+     * Method used to check for if winning conditions are present.
+     *
+     * @param  i  coordinate for button to check.
+     * @param  j  coordinate for button to check.
+     * @param  D  specific direction to check. -1 for all directions.
+     * @return    true if the game is over.
+     */
     private static boolean checkWin(int i, int j, int D) {
         System.out.println("checkWin run as " + (player == 1 ? "red" : "yellow") + " with D = " + D);
         if (D == -1) {
             // Middle Blocks
             System.out.print("Pri-checks:");
+            //top right adjacent block
             try {
 
                 if (grid[i + 1][j - 1].getIcon().equals((player == 1 ? red : yellow))) {
@@ -122,6 +142,7 @@ public class Gui {
             } catch (Exception e) {
                 System.out.println("Exception Here");
             }
+            //right adjacent block
             try {
 
                 if (grid[i + 1][j].getIcon().equals((player == 1 ? red : yellow))) {
@@ -131,6 +152,7 @@ public class Gui {
             } catch (Exception e) {
                 System.out.println("Exception Here");
             }
+            //bottom right adjacent block
             try {
 
                 if (grid[i + 1][j + 1].getIcon().equals((player == 1 ? red : yellow))) {
@@ -138,9 +160,10 @@ public class Gui {
                     System.out.print(" " + 2);
                 }
             } catch (Exception e) {
+              System.out.println("Exception Here");
             }
+            //bottom adjacent block
             try {
-
                 if (grid[i][j + 1].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[3]++;
                     System.out.print(" " + 3);
@@ -148,6 +171,7 @@ public class Gui {
             } catch (Exception e) {
                 System.out.println("Exception Here");
             }
+            //bottom left adjacent block
             try {
 
                 if (grid[i - 1][j + 1].getIcon().equals((player == 1 ? red : yellow))) {
@@ -157,6 +181,7 @@ public class Gui {
             } catch (Exception e) {
                 System.out.println("Exception Here");
             }
+            //left adjacent block
             try {
 
                 if (grid[i - 1][j].getIcon().equals((player == 1 ? red : yellow))) {
@@ -166,8 +191,8 @@ public class Gui {
             } catch (Exception e) {
                 System.out.println("Exception Here");
             }
+          	//top left adjacent block
             try {
-
                 if (grid[i - 1][j - 1].getIcon().equals((player == 1 ? red : yellow))) {
                     dir[6]++;
                     System.out.print(" " + 6);
@@ -192,6 +217,8 @@ public class Gui {
                     int result = JOptionPane.showConfirmDialog(null, text, title, optionType);
                     if (result == JOptionPane.OK_OPTION) {
                         resetGrid();
+                    } else {
+                      System.exit(0);
                     }
 
                     return true;
@@ -256,6 +283,9 @@ public class Gui {
         return false;
     }
 
+  	/**
+     * Method for reseting the game.
+     */
     private static void resetGrid() {
         //reset all icons to blank
         for (int i = 0; i < 6; i++) {
@@ -263,19 +293,24 @@ public class Gui {
                 grid[j][i].setIcon(blank);
             }
         }
+      	//reset player to yellow
         player = 0;
         live = true;
+      	//update gui
         turn.setText("Turn: Yellow");
-        //reset all columns to 0
-        //for(int j = 0; j < 7;j++)cols[j] = 0;
     }
 
+  	/**
+     * Main method used to run Connect4 game.
+     */
     public static void main(String[] Args) {
         System.out.println("Hello There");
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createGui();
+                //run gui method
+            	createGui();
             }
         });
     }
 }
+
